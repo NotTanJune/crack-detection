@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Model Prediction</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(to bottom, #181818, #005499); 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;   
+        }
+        .container {
+            background: #F2F2F2;
+            padding: 50px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: relative;
+            width: 1000px;
+            align-content: center;
+        }
+        .carousel-wrapper {
+            width: 600px;
+            overflow: hidden;
+        }
+
+        .carousel-container {
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: thin;
+            scrollbar-color: #ccc transparent;
+            position: relative;
+            padding: 10px;
+            scroll-behavior: smooth;
+        }
+        .carousel-item {
+            display: inline-block;
+            vertical-align: top; 
+            width:auto;            
+            padding: 10px;
+            margin: 20px  20px  -5px 0px;
+
+        }
+        .carousel-item img {
+            width: 150px;
+            height: 170px;
+        }
+        h2 {
+            margin-top: -15px;
+            margin-left: 23%;
+        }
+
+        h3 {
+            margin-top: 70px;
+        }
+
+        .cracked_counter {
+            color: rgb(203, 79, 77);
+            font-weight: bold;
+        }
+
+        .uncracked_counter {
+            color: rgb(77, 203, 86);
+            font-weight: bold;
+
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Machine Learning Model Output</h2>
+    <p>
+
+    </p>
+    <h3>RESULTS</h3>
+    <table>
+        <tr>
+            <th style="color:rgb(203, 79, 77)">Cracked</th>
+            <td>
+                <div class="carousel-wrapper">
+                <div class="carousel-container" id="crackedCarousel">
+                    {% for i in results %}
+                        {% if i.confidence > 0.98 %}
+                            <div class="carousel-item">
+                                <img src="{{ MEDIA_URL }}{{ i.image_url }}" alt="Uploaded Image">
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+                <div class="cracked_counter">Number of Cracked Samples: <span class="image-count" id="crackedCount">0</span></div>
+            </td>
+        </tr> 
+        <tr>
+            <th style="color:rgb(77, 203, 86)">Uncracked</th>
+            <td>
+                <div class="carousel-wrapper">
+                <div class="carousel-container" id="uncrackedCarousel">
+                    {% for i in results %}
+                        {% if i.confidence <= 0.98 %}
+                            <div class="carousel-item">
+                                <img src="{{ MEDIA_URL }}{{ i.image_url }}" alt="Uploaded Image">
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+                <div class="uncracked_counter">Number of Uncracked Samples: <span class="image-count" id="uncrackedCount">0</span></div>
+            </td>
+        </tr>
+    </table>
+    <script>
+        const crackedCarousel = document.getElementById('crackedCarousel');
+        const uncrackedCarousel = document.getElementById('uncrackedCarousel');
+        
+        const crackedCountSpan = document.getElementById('crackedCount');
+        const uncrackedCountSpan = document.getElementById('uncrackedCount');
+        
+        const crackedCount = crackedCarousel.getElementsByClassName('carousel-item').length;
+        const uncrackedCount = uncrackedCarousel.getElementsByClassName('carousel-item').length;
+        
+        crackedCountSpan.innerText = crackedCount;
+        uncrackedCountSpan.innerText = uncrackedCount;
+    </script>
+</div>
+</body>
+</html>
+
+
