@@ -1,7 +1,7 @@
 django
 numpy
 pandas
-sklearn
+scikit-learn
 tensorflow
 keras
-PIL
+Pillow
